@@ -1,0 +1,30 @@
+{
+  "name": "Ares.js",
+  "description": "3D WebGL Game Engine",
+  "author": "Nathan Faucett",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lonewolfgames"
+  },
+  "dependencies": {
+    "amdefine": ">= 0.0.4",
+    "requirejs": ">= 2.1.5"
+  },
+  "engine": "node >= 0.10.4",
+  "readmeFilename": "README.md",
+  "main": "build/ares.js",
+  "directories": {
+    "example": "examples"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "ares"
+  },
+  "keywords": [
+    "Ares",
+    "3D",
+    "Game Engine"
+  ],
+  "license": "BSD"
+}
