@@ -32,12 +32,12 @@ define([
         World.prototype.constructor = World;
         
         
-        World.prototype.add = function( rigidbody ){
+        World.prototype.add = function( body ){
 	    
         };
         
         
-        World.prototype.remove = function( rigidbody ){
+        World.prototype.remove = function( body ){
 	    
         };
         

@@ -48,13 +48,34 @@ define(
 	Ares.Time = require("base/time");
 	Ares.Utils = require("base/utils");
 	
+	Ares.Camera = require("core/components/camera");
 	Ares.Component = require("core/components/component");
+	Ares.Light = require("core/components/light");
+	Ares.Mesh = require("core/components/mesh");
 	
+	Ares.Geometry = require("core/geometry/geometry");
+	Ares.Face = require("core/geometry/face");
+	
+	Ares.Geometry.Cube = require("core/geometry/primitives/cube");
+	Ares.Geometry.Sphere = require("core/geometry/primitives/sphere");
+	
+	Ares.Accelerometer = require("core/input/accelerometer");
+	Ares.Input = require("core/input/input");
+	Ares.Keyboard = require("core/input/keyboard");
+	Ares.Mouse = require("core/input/mouse");
+	Ares.Orientation = require("core/input/orientation");
+	Ares.Touches = require("core/input/touches");
+	
+	Ares.Material = require("core/material/material");
+	Ares.Texture = require("core/material/texture");
+	
+	Ares.GameObject = require("core/objects/gameobject");
 	Ares.Transform2D = require("core/objects/transform2d");
 	Ares.Transform3D = require("core/objects/transform3d");
 	
 	Ares.Canvas = require("core/canvas");
-	Ares.GameObject = require("core/gameobject");
+	Ares.Game = require("core/game");
+	Ares.Renderer = require("core/renderer");
 	Ares.Scene = require("core/scene");
 	Ares.World = require("core/world");
 	

@@ -24,13 +24,13 @@ define([
             
             this.children = [];
             
-            this.matrix = new Mat4();
-            this.matrixWorld = new Mat4();
-            this.matrixModelView = new Mat4();
-            this.matrixNormal = new Mat3();
+            this.matrix = new Mat4;
+            this.matrixWorld = new Mat4;
+            this.matrixModelView = new Mat4;
+            this.matrixNormal = new Mat3;
             
-	    this.position = opts.position instanceof Vec3 ? opts.position : new Vec3();
-	    this.rotation = opts.rotation instanceof Quat ? opts.rotation : new Quat();
+	    this.position = opts.position instanceof Vec3 ? opts.position : new Vec3;
+	    this.rotation = opts.rotation instanceof Quat ? opts.rotation : new Quat;
 	    this.scale = opts.scale instanceof Vec3 ? opts.scale : new Vec3( 1, 1, 1 );
 	    
 	    this.updateMatrices();
@@ -146,7 +146,7 @@ define([
         
 	
         Transform3D.prototype.worldToLocal = function(){
-	    var mat = new Mat4();
+	    var mat = new Mat4;
 	    
 	    return function( v ){
 		
@@ -156,7 +156,7 @@ define([
         
         
         Transform3D.prototype.applyMat4 = function(){
-	    var mat = new Mat4();
+	    var mat = new Mat4;
 	    
 	    return function( matrix ){
 		
@@ -173,8 +173,8 @@ define([
         
 	
         Transform3D.prototype.translate = function(){
-	    var vec = new Vec3(),
-		quat = new Quat();
+	    var vec = new Vec3,
+		quat = new Quat;
 	    
 	    return function( translation, relativeTo ){
 		vec.copy( translation );
@@ -192,8 +192,8 @@ define([
         
         
         Transform3D.prototype.rotate = function(){
-	    var vec = new Vec3(),
-		quat = new Quat();
+	    var vec = new Vec3,
+		quat = new Quat;
 	    
 	    return function( rotation, relativeTo ){
 		vec.copy( rotation );
@@ -211,8 +211,8 @@ define([
         
         
         Transform3D.prototype.rotateAround = function(){
-	    var point = new Vec3(),
-		quat = new Quat();
+	    var point = new Vec3,
+		quat = new Quat;
 		
 	    return function( point, axis, angle ){
 		
@@ -227,9 +227,9 @@ define([
 	
         
         Transform3D.prototype.lookAt = function(){
-	    var vec = new Vec3(),
-		mat = new Mat4(),
-		quat = new Quat();
+	    var vec = new Vec3,
+		mat = new Mat4,
+		quat = new Quat;
 	    
 	    return function( target, up ){
 		up = up instanceof Vec3 ? up : undefined;
@@ -249,7 +249,7 @@ define([
 	
 	
 	Transform3D.prototype.follow = function(){
-	    var vec = new Vec3()
+	    var vec = new Vec3;
 	    
 	    return function( target, damping, relativeTo ){
 		damping = damping > 0 ? damping : 1;

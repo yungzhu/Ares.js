@@ -10,7 +10,7 @@ define([
         
 	function Time(){
 	    
-	    this.sinceStartup = 0;
+	    this.sinceStart = 0;
 	    
 	    this.time = 0;
 	    

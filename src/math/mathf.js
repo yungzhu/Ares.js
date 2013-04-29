@@ -7,7 +7,8 @@ define(
 	
 	var random = Math.random,
 	    floor = Math.floor,
-	    abs = Math.abs;
+	    abs = Math.abs,
+	    atan2 = Math.atan2;
 	
 	
 	function Mathf(){
@@ -160,6 +161,17 @@ define(
 	    
 	    return i;
         };
+        
+        
+        Mathf.prototype.direction = function( x, y ){
+	    
+	    if( abs( x ) >= abs( y ) ){
+		
+		return x > 0 ? "right" : "left"
+	    }
+	    
+	    return y > 0 ? "up" : "down"
+	};
 	
 	
 	return new Mathf;

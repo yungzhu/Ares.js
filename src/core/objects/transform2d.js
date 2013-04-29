@@ -20,11 +20,11 @@ define([
             
             this.children = [];
             
-	    this.matrix = new Mat3();
-            this.matrixWorld = new Mat3();
-            this.matrixModelView = new Mat3();
+	    this.matrix = new Mat3;
+            this.matrixWorld = new Mat3;
+            this.matrixModelView = new Mat3;
             
-	    this.position = opts.position instanceof Vec2 ? opts.position : new Vec2();
+	    this.position = opts.position instanceof Vec2 ? opts.position : new Vec2;
 	    this.rotation = !!opts.rotation ? opts.rotation : 0;
 	    this.scale = opts.scale instanceof Vec2 ? opts.scale : new Vec2( 1, 1 );
 	    
@@ -36,7 +36,7 @@ define([
         
         
         Transform2D.prototype.clone = function(){
-            var clone = new Transform2D();
+            var clone = new Transform2D;
 	    clone.copy( this );
 	    
             return clone;
@@ -72,10 +72,10 @@ define([
         Transform2D.prototype.add = function(){
             var children = this.children,
                 child, index, root,
-                a = 0, al = arguments.length;
+                i, il;
             
-            for( a; a < al; a++ ){
-                child = arguments[a];
+            for( i = 0, il = arguments.length; i < il; i++ ){
+                child = arguments[i];
                 index = children.indexOf( child );
                 
                 if( index === -1 && child instanceof Transform2D ){
@@ -94,8 +94,8 @@ define([
                     }
                     child.root = root;
                     
-                    child.event( "Add" );
-                    this.event( "onAddChild", child );
+                    child.trigger("add");
+                    this.trigger("addChild", child );
                 }
             }
             
@@ -106,10 +106,10 @@ define([
         Transform2D.prototype.remove = function(){
             var children = this.children,
                 child, index,
-                a = 0, al = arguments.length;
+                i, il;
             
-            for( a; a < al; a++ ){
-                child = arguments[a];
+            for( i = 0, il = arguments.length; i < il; i++ ){
+                child = arguments[i];
                 index = children.indexOf( child );
                 
                 if( index !== -1 ){
@@ -125,8 +125,8 @@ define([
                     }
                     child.root = root;
                     
-                    child.event( "Remove" );
-                    this.event( "onRemoveChild", child );
+                    child.trigger("remove" );
+                    this.trigger("removeChild", child );
                 }
             }
             
@@ -141,7 +141,7 @@ define([
         
 	
         Transform2D.prototype.worldToLocal = function(){
-	    var mat = new Mat3();
+	    var mat = new Mat3;
 	    
 	    return function( v ){
 		
@@ -151,7 +151,7 @@ define([
 	
 	
 	Transform2D.prototype.applyMat3 = function(){
-	    var mat = new Mat3();
+	    var mat = new Mat3;
 	    
 	    return function( matrix ){
 		
@@ -168,8 +168,8 @@ define([
         
 	
         Transform2D.prototype.translate = function(){
-	    var vec = new Vec2(),
-		mat = new Mat3();
+	    var vec = new Vec2,
+		mat = new Mat3;
 	    
 	    return function( translation, relativeTo ){
 		vec.copy( translation );
@@ -220,7 +220,7 @@ define([
         
         
         Transform2D.prototype.rotateAround = function(){
-	    var point = new Vec2();
+	    var point = new Vec2;
 		
 	    return function( point, angle ){
 		
@@ -234,8 +234,8 @@ define([
 	
         
         Transform2D.prototype.lookAt = function(){
-	    var vec = new Vec2(),
-		mat = new Mat3();
+	    var vec = new Vec2,
+		mat = new Mat3;
 	    
 	    return function( target ){
 		
@@ -254,7 +254,7 @@ define([
 	
 	
 	Transform2D.prototype.follow = function(){
-	    var vec = new Vec2();
+	    var vec = new Vec2;
 	    
 	    return function( target, damping, relativeTo ){
 		damping = damping > 0 ? damping : 1;

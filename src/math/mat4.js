@@ -324,9 +324,9 @@ define([
 	
 	Mat4.prototype.lookAt = function(){
 	    var defaultUp = new Vec3( 0, 0, 1 ),
-		x = new Vec3(),
-		y = new Vec3(),
-		z = new Vec3();
+		x = new Vec3,
+		y = new Vec3,
+		z = new Vec3;
 	    
 	    return function( eye, target, up ){
 		up = up instanceof Vec3 ? up : defaultUp;

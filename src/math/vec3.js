@@ -199,6 +199,24 @@ define([
         };
         
         
+        Vec3.prototype.vcross = function( a, b ){
+            var ax = a.x, ay = a.y, az = a.z,
+                bx = b.x, by = b.y, bz = b.z;
+            
+            this.x = ay * bz - az * by;
+            this.y = az * bx - ax * bz;
+            this.z = ax * by - ay * bx;
+            
+            return this;
+        };
+        
+        
+        Vec3.prototype.cross = function( v ){
+            
+            return this.vcross( this, v );
+        };
+        
+        
         Vec3.prototype.vslerp = function(){
 	    var start = new Vec3(),
 		end = new Vec3(),

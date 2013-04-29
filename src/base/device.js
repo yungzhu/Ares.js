@@ -57,16 +57,16 @@ define(
 	
 	
 	Device.prototype.requestAnimFrame = function(){
-	    var step = 50 / 3;
-	    
 	    return (
 		window.requestAnimationFrame || 
 		window.webkitRequestAnimationFrame || 
 		window.mozRequestAnimationFrame || 
 		window.oRequestAnimationFrame || 
 		window.msRequestAnimationFrame || 
-		function( callback ){
-		    window.setTimeout( callback, step );
+		function( callback, element ){
+		    window.setTimeout(function(){
+			callback( Date.now() );
+		    }, 50/3 );
 		}
 	    );
 	}();
@@ -75,6 +75,110 @@ define(
 	Device.prototype.cancelAnimFrame = function( id ){
 	    window.clearTimeout( id );
 	};
+	
+	
+	Device.prototype.getWebGLContext = function(){
+	    var defaultAttributes = {
+		alpha: true,
+		antialias: true,
+		depth: true,
+		premultipliedAlpha: true,
+		preserveDrawingBuffer: false,
+		stencil: true
+	    },
+	    names = ["webgl", "webkit-3d", "moz-webgl", "experimental-webgl", "3d"];
+	    
+	    return function( canvas, attributes ){
+		attributes = !!attributes ? attributes : defaultAttributes;
+		
+		var gl, i = 0, name;
+		    
+		for( i; i < names.length; i++ ){
+		    
+		    gl = canvas.getContext( names[i], attributes );
+		    
+		    if( !!gl ){
+			break;
+		    }
+		}
+		
+		if( !gl ){
+		    throw new Error("Utils.getWebGLContext: WebGL Context Creation Failed: "+ error );
+		}
+		
+		return gl;
+	    };
+	}();
+	
+	
+        Device.prototype.createShader = function( gl, type, source ){
+            var shader;
+            
+            if( type === "fragment" ){
+                shader = gl.createShader( gl.FRAGMENT_SHADER );
+            }
+            else if( type === "vertex" ){
+                shader = gl.createShader( gl.VERTEX_SHADER );
+            }
+	    else{
+		throw new Error("Device.createShader: no shader called"+ type );
+	    }
+            
+            gl.shaderSource( shader, source );
+            gl.compileShader( shader );
+            
+            if( !gl.getShaderParameter( shader, gl.COMPILE_STATUS ) ){
+                throw Error("Device.createShader: problem compiling shader "+ gl.getShaderInfoLog( shader ) );
+                gl.deleteShader( shader );
+                return undefined;
+            }
+            
+            return shader;
+        };
+        
+        
+        Device.prototype.createProgram = function( gl, vertex, fragment ){
+            var program = gl.createProgram(),
+                shader, i, il;
+            
+	    if( vertex instanceof Array ){
+		for( i = 0, il = vertex.length; i < il; i++ ){
+		    shader = Utils.createShader( gl, "vertex", vertex[i] );
+		    gl.attachShader( program, shader );
+		    gl.deleteShader( shader );
+		}
+	    }
+	    else{
+		shader = Utils.createShader( gl, "vertex", vertex );
+		gl.attachShader( program, shader );
+		gl.deleteShader( shader );
+	    }
+	    
+	    if( fragment instanceof Array ){
+		for( i = 0, il = fragment.length; i < il; i++ ){
+		    shader = Utils.createShader( gl, "fragment", fragment[i] );
+		    gl.attachShader( program, shader );
+		    gl.deleteShader( shader );
+		}
+	    }
+	    else{
+		shader = Utils.createShader( gl, "fragment", fragment );
+		gl.attachShader( program, shader );
+		gl.deleteShader( shader );
+	    }
+            
+            gl.linkProgram( program );
+            gl.validateProgram( program );
+            gl.useProgram( program );
+            
+            if( !gl.getProgramParameter( program, gl.LINK_STATUS ) ){
+                throw Error("Device.createProgram: problem compiling Program "+ gl.getProgramInfoLog( program ) );
+                gl.deleteProgram( program );
+                return undefined;
+            }
+            
+            return program;
+        };
 	
 	
 	return new Device;
