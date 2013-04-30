@@ -17,8 +17,6 @@ define([
 	    this.gamma = 0;
 	    
 	    this.mode = "portrait_up";
-	    
-	    this.onOrientation = undefined;
         };
         
         Orientation.prototype = Object.create( Class.prototype );
@@ -78,6 +76,6 @@ define([
         };
         
         
-        return new Orientation();
+        return new Orientation;
     }
 );

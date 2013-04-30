@@ -19,7 +19,7 @@ define([
 	    
 	    isDown = false, isUp = true,
 	    
-            element, offsetX, offsetY, x, y, last = new Vec2;
+            last = new Vec2;
         
         
         function Mouse(){
@@ -48,6 +48,7 @@ define([
         Mouse.prototype = Object.create( Class.prototype );
 	Mouse.prototype.constructor = Mouse;
         
+	
         Mouse.prototype.update = function(){
             
             downNeedsUpdate = true;
@@ -87,12 +88,12 @@ define([
         
         
         Mouse.prototype.getPosition = function( e ){
-            element = e.target || e.srcElement,
-            offsetX = element.offsetLeft,
-            offsetY = element.offsetTop;
+            var element = e.target || e.srcElement,
+		offsetX = element.offsetLeft,
+		offsetY = element.offsetTop,
             
-            x = ( e.pageX || e.clientX ) - offsetX;
-            y = ( window.innerHeight - ( e.pageY || e.clientY ) ) - offsetY;
+		x = ( e.pageX || e.clientX ) - offsetX,
+		y = ( window.innerHeight - ( e.pageY || e.clientY ) ) - offsetY;
             
             this.position.set( x, y );
         };

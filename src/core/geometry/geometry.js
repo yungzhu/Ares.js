@@ -419,7 +419,143 @@ define([
 	    this.uvNeedsUpdate = true;
 	};
 	
-    
+	
+	Geometry.prototype.initBuffers = function(){
+	    var compileArray = [],
+		vertices, vertex,
+		normals, normal,
+		tangents, tangent,
+		colors, color,
+		uvs, uv,
+		faces, face,
+		buffers, drawType,
+		ARRAY_BUFFER,
+		ELEMENT_ARRAY_BUFFER,
+		i, il;
+	    
+	    return function( gl ){
+		buffers = this.buffers;
+		drawType = this.dynamic === true ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
+		ARRAY_BUFFER = gl.ARRAY_BUFFER;
+		ELEMENT_ARRAY_BUFFER = gl.ELEMENT_ARRAY_BUFFER;
+		    
+		if( !buffers.vertices || this.verticesNeedsUpdate ){
+		    vertices = this.vertices;
+		    
+		    compileArray.length = 0;
+		    for( i = 0, il = vertices.length; i < il; i++ ){
+			vertex = vertices[i];
+			compileArray.push( vertex.x, vertex.y, vertex.z );
+		    }
+		    
+		    if( !!compileArray.length ){
+			buffers.vertices = buffers.vertices || gl.createBuffer();
+			
+			gl.bindBuffer( ARRAY_BUFFER, buffers.vertices );
+			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
+		    }
+		    
+		    this.verticesNeedsUpdate = false;
+		}
+		
+		if( !buffers.normals || this.normalsNeedsUpdate ){
+		    normals = this.normals;
+		    
+		    compileArray.length = 0;
+		    for( i = 0, il = normals.length; i < il; i++ ){
+			normal = normals[i];
+			compileArray.push( normal.x, normal.y, normal.z );
+		    }
+		    
+		    if( !!compileArray.length ){
+			buffers.normals = buffers.normals || gl.createBuffer();
+			
+			gl.bindBuffer( ARRAY_BUFFER, buffers.normals );
+			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
+		    }
+		    
+		    this.normalsNeedsUpdate = false;
+		}
+		
+		if( !buffers.tangents || this.tangentsNeedsUpdate ){
+		    tangents = this.tangents;
+		    
+		    compileArray.length = 0;
+		    for( i = 0, il = tangents.length; i < il; i++ ){
+			tangent = tangents[i];
+			compileArray.push( tangent.x, tangent.y, tangent.z, tangent.w );
+		    }
+		    
+		    if( !!compileArray.length ){
+			buffers.tangents = buffers.tangents || gl.createBuffer();
+			
+			gl.bindBuffer( ARRAY_BUFFER, buffers.tangents );
+			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
+		    }
+		    
+		    this.tangentsNeedsUpdate = false;
+		}
+		
+		if( !buffers.colors || this.colorsNeedsUpdate ){
+		    colors = this.colors;
+		    
+		    compileArray.length = 0;
+		    for( i = 0, il = colors.length; i < il; i++ ){
+			color = colors[i];
+			compileArray.push( color.x, color.y, color.z );
+		    }
+		    
+		    if( !!compileArray.length ){
+			buffers.colors = buffers.colors || gl.createBuffer();
+			
+			gl.bindBuffer( ARRAY_BUFFER, buffers.colors );
+			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
+		    }
+		    
+		    this.colorsNeedsUpdate = false;
+		}
+		
+		if( !buffers.uv || this.uvNeedsUpdate ){
+		    uvs = this.uv;
+		    
+		    compileArray.length = 0;
+		    for( i = 0, il = uvs.length; i < il; i++ ){
+			uv = uvs[i];
+			compileArray.push( uv.x, uv.y );
+		    }
+		    
+		    if( !!compileArray.length ){
+			buffers.uv = buffers.uv || gl.createBuffer();
+			
+			gl.bindBuffer( ARRAY_BUFFER, buffers.uv );
+			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
+		    }
+		    
+		    this.uvNeedsUpdate = false;
+		}
+		
+		if( !buffers.indices || this.facesNeedsUpdate ){
+		    faces = this.faces;
+		    
+		    compileArray.length = 0;
+		    for( i = 0, il = faces.length; i < il; i++ ){
+			face = faces[i];
+			compileArray.push( face.a, face.b, face.c );
+		    }
+		    
+		    if( !!compileArray.length ){
+			buffers.indices = buffers.indices || gl.createBuffer();
+			
+			gl.bindBuffer( ELEMENT_ARRAY_BUFFER, buffers.indices );
+			gl.bufferData( ELEMENT_ARRAY_BUFFER, new Int16Array( compileArray ), drawType );
+		    }
+		    
+		    this.facesNeedsUpdate = false;
+		}
+	    }
+        }();
+	
+	
         return Geometry;
     }
 );

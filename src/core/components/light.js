@@ -10,7 +10,7 @@ define([
         
         
         function Light( opts ){
-            opts = !!opts ? opts : {};
+            opts || ( opts = {} );
             
             Component.call( this );
             

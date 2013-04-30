@@ -323,7 +323,7 @@ define([
         
         
         Vec2.prototype.len = function(){
-            
+	    
             return sqrt( this.lenSq() );
         };
         

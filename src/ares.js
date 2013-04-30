@@ -16,7 +16,7 @@ define(
 	    window.Ares = this;
 	};
 	
-	Ares.speedTest = function(){
+	Ares.test = function(){
 	    var now = Date.now,
 		start, i;
 	    
@@ -61,9 +61,11 @@ define(
 	
 	Ares.Accelerometer = require("core/input/accelerometer");
 	Ares.Input = require("core/input/input");
+	Ares.Key = require("core/input/key");
 	Ares.Keyboard = require("core/input/keyboard");
 	Ares.Mouse = require("core/input/mouse");
 	Ares.Orientation = require("core/input/orientation");
+	Ares.Touch = require("core/input/touch");
 	Ares.Touches = require("core/input/touches");
 	
 	Ares.Material = require("core/material/material");
@@ -73,6 +75,10 @@ define(
 	Ares.Transform2D = require("core/objects/transform2d");
 	Ares.Transform3D = require("core/objects/transform3d");
 	
+	Ares.FragmentShader = require("core/shader/fragmentshader");
+	Ares.VertexShader = require("core/shader/vertexshader");
+	
+	Ares.Assets = require("core/assets");
 	Ares.Canvas = require("core/canvas");
 	Ares.Game = require("core/game");
 	Ares.Renderer = require("core/renderer");

@@ -57,7 +57,7 @@ define([
 	    for( i = 0, il = other.children.length; i < il; i++ ){
 		child = children[i];
 		
-		if( !!child ){
+		if( child ){
 		    this.add( child.clone() );
 		}
 	    }

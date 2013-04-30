@@ -11,13 +11,15 @@ define([
 	"math/mat4",
 	"core/components/light",
 	"core/material/material",
+	"core/shader/fragmentshader",
+	"core/shader/vertexshader"
     ],
-    function( Class, Utils, Device, Canvas, Color, Vec3, Mat4, Light, Material ){
+    function( Class, Utils, Device, Canvas, Color, Vec3, Mat4, Light, Material, FragmentShader, VertexShader ){
 	"use strict";
 	
 	
         function Renderer( opts ){
-            opts = !!opts ? opts : {};
+            opts || ( opts = {} );
             
             Class.call( this );
             
@@ -316,7 +318,7 @@ define([
 		for( i = 0, il = meshes.length; i < il; i++ ){
 		    mesh = meshes[i];
 		    
-		    if( !!mesh && mesh.material.visible ){
+		    if( mesh && mesh.material.visible ){
 			gameObject = mesh.gameObject;
 			
 			this.setupMatrices( gameObject, camera );
@@ -405,7 +407,7 @@ define([
 		    shader = material.shader,
 		    program = shader.program;
 		
-		this.initGeometryBuffers( mesh );
+		geometry.initBuffers( gl );
 		this.initMeshShader( mesh, scene );
 		
 		if( lastProgram !== program ){
@@ -734,146 +736,6 @@ define([
 		texture.needsUpdate = false;
 	    }
         };
-        
-        
-        Renderer.prototype.initGeometryBuffers = function(){
-	    var compileArray = [],
-		vertices, vertex,
-		normals, normal,
-		tangents, tangent,
-		colors, color,
-		uvs, uv,
-		faces, face,
-		geometry,
-		buffers, drawType,
-		ARRAY_BUFFER,
-		ELEMENT_ARRAY_BUFFER,
-		i, il;
-	    
-	    return function( mesh ){
-		var gl = this.context,
-		
-		geometry = mesh.geometry;
-		buffers = geometry.buffers;
-		drawType = geometry.dynamic === true ? gl.DYNAMIC_DRAW : gl.STATIC_DRAW;
-		ARRAY_BUFFER = gl.ARRAY_BUFFER;
-		ELEMENT_ARRAY_BUFFER = gl.ELEMENT_ARRAY_BUFFER;
-		    
-		if( !buffers.vertices || geometry.verticesNeedsUpdate ){
-		    vertices = geometry.vertices;
-		    
-		    compileArray.length = 0;
-		    for( i = 0, il = vertices.length; i < il; i++ ){
-			vertex = vertices[i];
-			compileArray.push( vertex.x, vertex.y, vertex.z );
-		    }
-		    
-		    if( !!compileArray.length ){
-			buffers.vertices = buffers.vertices || gl.createBuffer();
-			
-			gl.bindBuffer( ARRAY_BUFFER, buffers.vertices );
-			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
-		    }
-		    
-		    geometry.verticesNeedsUpdate = false;
-		}
-		
-		if( !buffers.normals || geometry.normalsNeedsUpdate ){
-		    normals = geometry.normals;
-		    
-		    compileArray.length = 0;
-		    for( i = 0, il = normals.length; i < il; i++ ){
-			normal = normals[i];
-			compileArray.push( normal.x, normal.y, normal.z );
-		    }
-		    
-		    if( !!compileArray.length ){
-			buffers.normals = buffers.normals || gl.createBuffer();
-			
-			gl.bindBuffer( ARRAY_BUFFER, buffers.normals );
-			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
-		    }
-		    
-		    geometry.normalsNeedsUpdate = false;
-		}
-		
-		if( !buffers.tangents || geometry.tangentsNeedsUpdate ){
-		    tangents = geometry.tangents;
-		    
-		    compileArray.length = 0;
-		    for( i = 0, il = tangents.length; i < il; i++ ){
-			tangent = tangents[i];
-			compileArray.push( tangent.x, tangent.y, tangent.z, tangent.w );
-		    }
-		    
-		    if( !!compileArray.length ){
-			buffers.tangents = buffers.tangents || gl.createBuffer();
-			
-			gl.bindBuffer( ARRAY_BUFFER, buffers.tangents );
-			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
-		    }
-		    
-		    geometry.tangentsNeedsUpdate = false;
-		}
-		
-		if( !buffers.colors || geometry.colorsNeedsUpdate ){
-		    colors = geometry.colors;
-		    
-		    compileArray.length = 0;
-		    for( i = 0, il = colors.length; i < il; i++ ){
-			color = colors[i];
-			compileArray.push( color.x, color.y, color.z );
-		    }
-		    
-		    if( !!compileArray.length ){
-			buffers.colors = buffers.colors || gl.createBuffer();
-			
-			gl.bindBuffer( ARRAY_BUFFER, buffers.colors );
-			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
-		    }
-		    
-		    geometry.colorsNeedsUpdate = false;
-		}
-		
-		if( !buffers.uv || geometry.uvNeedsUpdate ){
-		    uvs = geometry.uv;
-		    
-		    compileArray.length = 0;
-		    for( i = 0, il = uvs.length; i < il; i++ ){
-			uv = uvs[i];
-			compileArray.push( uv.x, uv.y );
-		    }
-		    
-		    if( !!compileArray.length ){
-			buffers.uv = buffers.uv || gl.createBuffer();
-			
-			gl.bindBuffer( ARRAY_BUFFER, buffers.uv );
-			gl.bufferData( ARRAY_BUFFER, new Float32Array( compileArray ), drawType );
-		    }
-		    
-		    geometry.uvNeedsUpdate = false;
-		}
-		
-		if( !buffers.indices || geometry.facesNeedsUpdate ){
-		    faces = geometry.faces;
-		    
-		    compileArray.length = 0;
-		    for( i = 0, il = faces.length; i < il; i++ ){
-			face = faces[i];
-			compileArray.push( face.a, face.b, face.c );
-		    }
-		    
-		    if( !!compileArray.length ){
-			buffers.indices = buffers.indices || gl.createBuffer();
-			
-			gl.bindBuffer( ELEMENT_ARRAY_BUFFER, buffers.indices );
-			gl.bufferData( ELEMENT_ARRAY_BUFFER, new Int16Array( compileArray ), drawType );
-		    }
-		    
-		    geometry.facesNeedsUpdate = false;
-		}
-	    }
-        }();
         
         
         Renderer.prototype.initMeshShader = function(){

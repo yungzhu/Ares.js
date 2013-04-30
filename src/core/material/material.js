@@ -46,6 +46,17 @@ define([
             this.depthTest = opts.depthTest !== undefined ? opts.depthTest : true;
             this.depthWrite = opts.depthWrite !== undefined ? opts.depthWrite : true;
             
+	    this.shader = {
+                opts: {},
+                used: 0,
+                uniforms: {},
+                attributes: {},
+                vertex: undefined,
+                fragment: undefined,
+                src: undefined,
+                program: undefined
+            };
+            
             this.needsUpdate = true;
         }
         

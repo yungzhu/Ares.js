@@ -17,17 +17,6 @@ define([
             
             this.geometry = opts.geometry instanceof Geometry ? opts.geometry : new Geometry();
             this.material = opts.material instanceof Material ? opts.material : new Material();
-	    
-	    this._data = {
-                opts: {},
-                used: 0,
-                uniforms: {},
-                attributes: {},
-                vertex: undefined,
-                fragment: undefined,
-                src: undefined,
-                program: undefined
-            };
         }
         
         Mesh.prototype = Object.create( Component.prototype );

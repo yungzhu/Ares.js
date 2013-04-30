@@ -2,9 +2,12 @@ if( typeof define !== "function" ){
     var define = require("amdefine")( module );
 }
 define([
-	"core/objects/transform3d"
+	"core/objects/transform3d",
+	"core/components/camera",
+	"core/components/light",
+	"core/components/mesh"
     ],
-    function( Transform3D ){
+    function( Transform3D, Camera, Light, Mesh ){
         "use strict";
 	
 	
@@ -50,11 +53,6 @@ define([
 	    for( name in other.components ){
                 component = other.components[ name ];
 		this.addComponent( component.clone() );
-            }
-	    
-            for( name in other.props ){
-                prop = other.props[ name ];
-		this.props[ name ] = prop;
             }
             
             if( other.scene ){

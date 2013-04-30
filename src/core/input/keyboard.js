@@ -4,9 +4,9 @@ if( typeof define !== "function" ){
 define([
 	"base/class",
 	"base/time",
-	"math/vec2"
+	"core/input/key"
     ],
-    function( Class, Time, Vec2 ){
+    function( Class, Time, Key ){
 	"use strict";
 	
         
@@ -20,9 +20,6 @@ define([
                 
                 this.keys[ key ] = new Key( key, keyNames[ key ] );
             }
-	    
-	    this.onKeyUp = undefined;
-	    this.onKeyDown = undefined;
         };
         
         Keyboard.prototype = Object.create( Class.prototype );
@@ -84,22 +81,6 @@ define([
                     this.trigger("keyUp", key );
 		}
 	    }
-        };
-        
-        
-        function Key( name, keyCode ){
-            
-            this.name = name;
-            this.keyCode = keyCode;
-            this.down = false;
-            
-            this._first = true;
-	    
-            this._downFrame = -1;
-            this._upFrame = -1;
-	    
-            this.downTime = -1;
-            this.endTime = -1;
         };
         
         
@@ -220,6 +201,6 @@ define([
         };
         
         
-        return new Keyboard();
+        return new Keyboard;
     }
 );

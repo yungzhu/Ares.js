@@ -10,7 +10,7 @@ define([
         
         
         function Cube( opts ){
-            opts = !!opts ? opts : {};
+            opts || ( opts = {} );
             
             var w = ( opts.width !== undefined ? opts.width : 1 ) * 0.5,
                 h = ( opts.height !== undefined ? opts.height : 1 ) * 0.5,

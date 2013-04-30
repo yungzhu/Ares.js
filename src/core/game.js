@@ -6,17 +6,18 @@ define([
 	"base/time",
 	"base/utils",
 	"core/input/input",
+	"core/assets",
 	"core/scene",
 	"core/renderer",
     ],
-    function( Class, Time, Utils, Input, Scene, Renderer ){
+    function( Class, Time, Utils, Input, Assets, Scene, Renderer ){
 	"use strict";
         
 	var addEvent = Utils.addEvent;
 	
         
         function Game( opts ){
-            opts = !!opts ? opts : {};
+            opts || ( opts = {} );
             
             Class.call( this );
 	    
@@ -28,6 +29,9 @@ define([
             this.renderer = new Renderer( opts );
 	    
 	    Input.init( this.renderer.canvas.element );
+	    
+	    this.listenTo( Assets, "done", this.init, this );
+	    Assets.loadAll( opts.sources );
 	    
             this.addScene.apply( this, opts.scenes );
             
@@ -174,7 +178,7 @@ define([
 	    this.update();
 	    this.render();
 	    
-	    Device.requestAnimFrame.call( window, this.animate.bind( this ) );
+	    Device.requestAnimFrame( this.animate.bind( this ) );
 	    
 	    Time.sinceStart = Utils.now() * 0.001;
 	};

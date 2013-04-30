@@ -32,19 +32,20 @@ define([
 	
 	
 	Class.prototype.off = function( name ){
+	    var events = this._events[ name ];
 	    
-	    this._events[ name ].length = 0;
+	    if( events ) events.length = 0;
 	    
 	    return this;
         };
 	
 	
 	Class.prototype.trigger = function( name ){
-	    var event, i, il, args,
-		events = this._events[ name ];
-		
+	    var events = this._events[ name ];
 	    if( !events || !events.length ) return this;
-	    args = slice.call( arguments, 1 );
+	    
+	    var event, i, il,
+		args = slice.call( arguments, 1 );
 	    
 	    for( i = 0, il = events.length; i < il; i++ ){
 		( event = events[i] ).callback.apply( event.ctx, args );
@@ -54,9 +55,10 @@ define([
         };
 	
 	
-	Class.prototype.listenTo = function( obj, name, callback ){
+	Class.prototype.listenTo = function( obj, name, callback, ctx ){
+	    if( !obj ) return this;
 	    
-	    obj.on( name, callback, this );
+	    obj.on( name, callback, ctx || this );
 	    
 	    return this;
         };

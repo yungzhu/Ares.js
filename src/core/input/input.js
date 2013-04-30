@@ -31,13 +31,13 @@ define([
             
             this.element = element;
 	    
-            addEvent( element, "mousedown, mousemove, mouseup, mouseout, DOMMouseScroll, mousewheel, touchstart, touchmove, touchend, touchcancel", this.handleEvents, this );
+            addEvent( element, "mousedown mousemove mouseup mouseout DOMMouseScroll mousewheel touchstart touchmove touchend touchcancel", this.handleEvents, this );
             
-            addEvent( element, "mousedown, mousemove, mouseup, mouseout, DOMMouseScroll, mousewheel", Mouse.handleEvents, Mouse );
-            addEvent( element, "touchstart, touchmove, touchend, touchcancel", Touches.handleEvents, Touches );
-            addEvent( top, "keydown, keyup", Keyboard.handleEvents, Keyboard );
+            addEvent( element, "mousedown mousemove mouseup mouseout DOMMouseScroll mousewheel", Mouse.handleEvents, Mouse );
+            addEvent( element, "touchstart touchmove touchend touchcancel", Touches.handleEvents, Touches );
+            addEvent( top, "keydown keyup", Keyboard.handleEvents, Keyboard );
             addEvent( window, "devicemotion", Accelerometer.handle_devicemotion, Accelerometer );
-            addEvent( window, "deviceorientation, orientationchange", Orientation.handleEvents, Orientation );
+            addEvent( window, "deviceorientation orientationchange", Orientation.handleEvents, Orientation );
         }
         
         

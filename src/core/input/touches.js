@@ -4,30 +4,29 @@ if( typeof define !== "function" ){
 define([
 	"base/class",
 	"base/time",
-	"math/vec2"
+	"math/vec2",
+	"core/input/touch"
     ],
-    function( Class, Time, Vec2 ){
+    function( Class, Time, Vec2, Touch ){
 	"use strict";
         
-        var min = Math.min,
-	    startNeedsUpdate = true,
+        var startNeedsUpdate = true,
             moveNeedsUpdate = true,
             endNeedsUpdate = true,
             
-            element, offsetX, offsetY, x, y, last = new Vec2,
+            x, y, last = new Vec2,
             
             touches, touch, count, i, j,
             evtTouches, evtTouch;
         
         
-        function Touches( max ){
+        function Touches(){
             
             Class.call( this );
             
-            max = min( max || 5, 5 );
             this.array = [];
             
-            for( var i = 0; i < max; i++ ){
+            for( var i = 0; i < 11; i++ ){
                 this.array.push( new Touch );
             }
         };
@@ -38,11 +37,10 @@ define([
         
         Touches.prototype.clear = function(){
             var array =  this.array,
-                t = 0, tl = array.length;
-            
-            for( t; t < tl; t++ ){
-                
-                array[t].clear();
+                i, il;
+	    
+           for( i = 0, il = array.length; i < il; i++ ){
+                array[i].clear();
             }
         };
         
@@ -55,10 +53,10 @@ define([
 		array.length = 0;
 		
 		var thisArray = this.array, touch,
-		    t = 0, tl = thisArray.length;
+		    i, il;
 		
-		for( t; t < tl; t++ ){
-		    touch = thisArray[t];
+		for( i = 0, il = thisArray.length; i < il; i++ ){
+		    touch = thisArray[i];
 		    
 		    if( touch.identifier !== -1 ){
 			array.push( touch );
@@ -72,10 +70,10 @@ define([
         
         Touches.prototype.forEach = function( callback ){
 	    var thisArray = this.array, touch,
-		t = 0, tl = thisArray.length;
+		i, il;
 	    
-	    for( t; t < tl; t++ ){
-		touch = thisArray[t];
+	    for( i = 0, il = thisArray.length; i < il; i++ ){
+		touch = thisArray[i];
 		
 		if( touch.identifier !== -1 ){
 		    callback( touch );
@@ -86,11 +84,10 @@ define([
         
         Touches.prototype.count = function(){
 	    var thisArray = this.array, touch,
-		t = 0, tl = thisArray.length,
-		count = 0;
+		i, il, count = 0;
 	    
-	    for( t; t < tl; t++ ){
-		touch = thisArray[t];
+	    for( i = 0, il = thisArray.length; i < il; i++ ){
+		touch = thisArray[i];
 		
 		if( touch.identifier !== -1 ){
 		    count++;
@@ -122,8 +119,11 @@ define([
                     break;
                 
                 case "touchend":
-                case "touchcancel":
                     this.handle_touchend( e );
+                    break;
+                
+                case "touchcancel":
+                    this.handle_touchcancel( e );
                     break;
             }
         };
@@ -199,7 +199,7 @@ define([
         };
         
         
-        Touches.prototype.handle_touchend = Touches.prototype.handle_touchcancel = function( e ){
+        Touches.prototype.handle_touchend = function( e ){
             
             if( endNeedsUpdate ){
                 
@@ -241,51 +241,12 @@ define([
         };
         
         
-        function Touch(){
-            this.identifier = -1;
+        Touches.prototype.handle_touchcancel = function( e ){
             
-            this.start = new Vec2;
-            this.delta = new Vec2;
-            this.position = new Vec2;
-            this.end = new Vec2;
-	    
-	    this._first = false;
-	    
-	    this._downFrame = -1;
-	    this._upFrame = -1;
-	    
-	    this.startTime = 0;
-	    this.deltaTime = 0;
-	    this.endTime = 0;
+	    this.clear();
         };
         
         
-        Touch.prototype.clear = function(){
-            this.identifier = -1;
-            
-            this.start.set( 0, 0 );
-            this.delta.set( 0, 0 );
-            this.position.set( 0, 0 );
-            this.end.set( 0, 0 );
-	    
-	    this.startTime = 0;
-	    this.deltaTime = 0;
-	    this.endTime = 0;
-        };
-        
-        
-        Touch.prototype.getPosition = function( e ){
-            element = e.target || e.srcElement,
-            offsetX = element.offsetLeft,
-            offsetY = element.offsetTop;
-            
-            x = ( e.pageX || e.clientX ) - offsetX;
-            y = ( window.innerHeight - ( e.pageY || e.clientY ) ) - offsetY;
-            
-            this.position.set( x, y );
-        };
-        
-        
-        return new Touches();
+        return new Touches;
     }
 );

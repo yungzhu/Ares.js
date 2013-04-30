@@ -151,7 +151,10 @@ define([
                     console.warn("Scene.remove: "+ child +" is not within this scene");
                 }
             }
-        };Scene.prototype._add = function( gameObject ){
+        };
+	
+	
+	Scene.prototype._add = function( gameObject ){
             var mesh = gameObject.getComponent("Mesh"),
 		light = gameObject.getComponent("Light"),
 		camera = gameObject.getComponent("Camera"),

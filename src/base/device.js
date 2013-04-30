@@ -57,7 +57,7 @@ define(
 	
 	
 	Device.prototype.requestAnimFrame = function(){
-	    return (
+	    var request = (
 		window.requestAnimationFrame || 
 		window.webkitRequestAnimationFrame || 
 		window.mozRequestAnimationFrame || 
@@ -69,6 +69,10 @@ define(
 		    }, 50/3 );
 		}
 	    );
+	    
+	    return function( callback, element ){
+		request.call( window, callback, element );
+	    };
 	}();
 	
 	
@@ -103,7 +107,7 @@ define(
 		}
 		
 		if( !gl ){
-		    throw new Error("Utils.getWebGLContext: WebGL Context Creation Failed: "+ error );
+		    throw new Error("Device.getWebGLContext: WebGL Context Creation Failed: "+ error );
 		}
 		
 		return gl;
@@ -143,26 +147,26 @@ define(
             
 	    if( vertex instanceof Array ){
 		for( i = 0, il = vertex.length; i < il; i++ ){
-		    shader = Utils.createShader( gl, "vertex", vertex[i] );
+		    shader = this.createShader( gl, "vertex", vertex[i] );
 		    gl.attachShader( program, shader );
 		    gl.deleteShader( shader );
 		}
 	    }
 	    else{
-		shader = Utils.createShader( gl, "vertex", vertex );
+		shader = this.createShader( gl, "vertex", vertex );
 		gl.attachShader( program, shader );
 		gl.deleteShader( shader );
 	    }
 	    
 	    if( fragment instanceof Array ){
 		for( i = 0, il = fragment.length; i < il; i++ ){
-		    shader = Utils.createShader( gl, "fragment", fragment[i] );
+		    shader = this.createShader( gl, "fragment", fragment[i] );
 		    gl.attachShader( program, shader );
 		    gl.deleteShader( shader );
 		}
 	    }
 	    else{
-		shader = Utils.createShader( gl, "fragment", fragment );
+		shader = this.createShader( gl, "fragment", fragment );
 		gl.attachShader( program, shader );
 		gl.deleteShader( shader );
 	    }

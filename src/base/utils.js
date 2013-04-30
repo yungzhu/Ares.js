@@ -106,22 +106,37 @@ define(
 	
 	
 	Utils.prototype.now = function(){
-	    var startTime = Date.now();
+	    var startTime = Date.now(),
+		performance = window.performance || {};
+		
+	    performance.now = (function() {
+		return (
+		    performance.now ||
+		    performance.mozNow ||
+		    performance.msNow ||
+		    performance.oNow ||
+		    performance.webkitNow ||
+		    function(){
+			return Date.now() - startTime; 
+		    }
+		);
+	    })();
 	    
 	    return function(){
 		
-		return Date.now() - startTime;
+		return performance.now();
 	    }
 	}();
 	
 	
 	Utils.prototype.addEvent = function( context, name, callback, ctx ){
 	    var names = name.split( splitter ), i, il,
+		scope = ctx || context,
 		afn = function( e ){
 		    e = e || window.event;
 		    
 		    if( callback ){
-			callback.call( ctx || context, e );
+			callback.call( scope, e );
 		    }
 		};
             
@@ -140,11 +155,12 @@ define(
 	
 	Utils.prototype.removeEvent = function( context, name, callback, ctx ){
 	    var names = name.split( splitter ), i, il,
+		scope = ctx || context,
 		afn = function( e ){
 		    e = e || window.event;
 		    
 		    if( callback ){
-			callback.call( ctx || context, e );
+			callback.call( scope, e );
 		    }
 		};
             

@@ -20,8 +20,6 @@ define([
 	    this.x = 0;
 	    this.y = 0;
 	    this.z = 0;
-	    
-	    this.onChange = undefined;
         };
         
         Accelerometer.prototype = Object.create( Class.prototype );
@@ -38,14 +36,14 @@ define([
                 y = aig.y,
                 z = aig.z
                 
-		len = abs( x * x + y * y + z * z );
+		len = x * x + y * y + z * z;
 		
 		if( len > 0 ){
-		    len = sqrt( len );
+		    len = 1 / sqrt( len );
 		    
-		    this.x = x / len;
-		    this.y = y / len;
-		    this.z = z / len;
+		    this.x = x * len;
+		    this.y = y * len;
+		    this.z = z * len;
 		}
 		else{
 		    this.x = 0;
@@ -58,6 +56,6 @@ define([
         };
         
         
-        return new Accelerometer();
+        return new Accelerometer;
     }
 );
