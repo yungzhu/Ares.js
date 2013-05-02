@@ -13,7 +13,8 @@ define([
     function( Class, Time, Utils, Input, Assets, Scene, Renderer ){
 	"use strict";
         
-	var addEvent = Utils.addEvent;
+	var addEvent = Utils.addEvent,
+	    floor = Math.floor;
 	
         
         function Game( opts ){
@@ -174,14 +175,34 @@ define([
         
         
         Game.prototype.animate = function(){
+	    var fpsDisplay = document.createElement("p"),
+	    	fpsSpan = document.createElement("span");
 	    
-	    this.update();
-	    this.render();
+	    fpsDisplay.style.cssText = [
+		"z-index: 1000;",
+		"position: absolute;",
+		"margin: 0px;",
+		"padding: 0px;",
+		"color: #ddd;",
+		"text-shadow: 1px 1px #333"
+	    ].join("\n");
 	    
-	    Device.requestAnimFrame( this.animate.bind( this ) );
+	    fpsDisplay.innerHTML = "FPS: ";
+	    fpsDisplay.appendChild( fpsSpan );
 	    
-	    Time.sinceStart = Utils.now() * 0.001;
-	};
+	    document.body.appendChild( fpsDisplay );
+	    
+	    return function(){
+		fpsSpan.innerHTML = floor( Time.fps );
+		
+		this.update();
+		this.render();
+		
+		Device.requestAnimFrame( this.animate.bind( this ) );
+		
+		Time.sinceStart = Utils.now() * 0.001;
+	    };
+	}();
         
         
         Game.prototype.handleFocus = function( e ){
