@@ -329,74 +329,8 @@ define([
         }();
         
 	
-	var lastProgram;
-	
-        Renderer.prototype.renderParticleEmitter = function(){
-	    var lastTexture,
-		vec3 = new Vec3();
-	    
-	    return function( particleEmitter, camera ){
-		var gl = this.context,
-		    stats = this.stats,
-		    gameObject = particleEmitter.gameObject,
-		    particles = particleEmitter.particles,
-		    defaults = this.defaults,
-		    vertexBuffer = defaults.particleBuffers.vertexBuffer,
-		    uvBuffer = defaults.particleBuffers.uvBuffer,
-		    shader = defaults.particleShader,
-		    attributes = shader.attributes,
-		    uniforms = shader.uniforms,
-		    program = shader.program,
-		    texture = particleEmitter.texture,
-		    particle, position, color, i, j, il;
-		
-		
-		if( lastProgram !== program ){
-		    
-		    gl.useProgram( program );
-		    lastProgram = program;
-		}
-		if( lastTexture !== texture ){
-		    
-		    this.initTexture( texture );
-		    
-		    gl.activeTexture( gl.TEXTURE0 );
-		    gl.bindTexture( gl.TEXTURE_2D, texture.data );
-		    gl.uniform1i( uniforms.uDiffuse, 0 );
-		    
-		    lastTexture = texture;
-		}
-		
-		gl.bindBuffer( gl.ARRAY_BUFFER, vertexBuffer );
-		gl.enableVertexAttribArray( attributes.aVertexPosition );
-		gl.vertexAttribPointer( attributes.aVertexPosition, 3, gl.FLOAT, false, 0, 0 );
-		
-		gl.bindBuffer( gl.ARRAY_BUFFER, uvBuffer );
-		gl.enableVertexAttribArray( attributes.aVertexUv );
-		gl.vertexAttribPointer( attributes.aVertexUv, 2, gl.FLOAT, false, 0, 0 );
-		
-		gl.uniformMatrix4fv( uniforms.uMatrixProjection, false, camera.matrixProjection.elements );
-		gl.uniformMatrix4fv( uniforms.uMatrixModelView, false, particleEmitter.matrix.elements );
-		
-		for( i = 0, il = particles.length; i < il; i++ ){
-		    particle = particles[i];
-		    position = particle.position;
-		    color = particle.color;
-		    
-		    gl.uniform4f( uniforms.uColor, color.r, color.g, color.b, particle.alpha );
-		    gl.uniform3f( uniforms.uPosition, position.x, position.y, position.z );
-		    gl.uniform1f( uniforms.uSize, particle.size );
-		    
-		    gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
-		    
-		    stats.calls++;
-		}
-	    };
-	}();
-        
-	
         Renderer.prototype.renderMesh = function(){
-	    var lastMaterial, lastGeometry;
+	    var lastMaterial, lastGeometry, lastProgram;
 	    
 	    return function( mesh, camera, scene ){
 		var gl = this.context,
